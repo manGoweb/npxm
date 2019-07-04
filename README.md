@@ -1,6 +1,6 @@
 # npxm (Node Package Version Manager)
 
-It is similar to `npx` but cached.
+It is similar to `npx` but **cached**.
 
 ## Usage
 
@@ -33,6 +33,18 @@ npxm run mango-cli@2 --version
 #> …
 #> [npxm] Running `mango --version` (mango-cli@2.7.1 at /Users/viliamkopecky/www/npxm/installed/mango-cli/2.7.1)
 2.7.1
+```
+
+## Compare with `npx`
+
+`npx` doesn't cache. So if you run same command multiple times, it always takes time. Dont forget to add `run`.
+
+```sh
+# this will always take time to install gatsby
+npx gatsby new gatsby-site
+
+# this will take time just the first install. Or with newer version
+npxm run gatsby new gatsby-site
 ```
 
 ## Now you can build older projects with legacy mango-cli version

@@ -4,14 +4,17 @@ It is similar to `npx` but **cached**.
 
 ## Compare with `npx`
 
-`npx` doesn't cache. So if you run same command multiple times, it always takes time. Dont forget to add `run`.
+Each use of `npx` downloads the package from internet while `npxm` keeps used packages in its cache. So repeated use of the same package is instant.
 
 ```sh
-# this will always take time to install gatsby
+# this will always download fresh package - take your time
 npx gatsby new gatsby-site
 
-# this will take time just the first install. Or with newer version
+# first time download is necesasary
 npxm run gatsby new gatsby-site
+
+# second time download is omited and task is ran instantly
+npxm run gatsby new gatsby-second-site
 ```
 
 ## Install and use

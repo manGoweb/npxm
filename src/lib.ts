@@ -17,6 +17,7 @@ const exec = (cmd: string, params: string[], cwd: string): Promise<void> =>
 		const process = require('child_process').spawn(cmd, params, {
 			cwd,
 			stdio: 'inherit',
+			shell: true,
 		})
 		process.on('exit', (code: number) => {
 			if (code === 0) {
@@ -117,8 +118,7 @@ export async function run(packageName: string, command: string, params: string[]
 		const binPath = path.join(info.packagePath, info.manifest.bin[command])
 
 		if (fs.existsSync(binPath)) {
-			await exec('chmod', ['+x', binPath], info.packagePath)
-			await exec(binPath, params || [], process.cwd())
+			await exec('node', [binPath, ...(params || [])], process.cwd())
 		} else {
 			throw new Error(`[npxm] Executable ${binPath} does not exist`)
 		}

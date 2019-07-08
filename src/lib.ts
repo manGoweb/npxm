@@ -92,7 +92,7 @@ export async function add(
 export async function link(packageName: string, forceUpdate = false) {
 	const info = await add(packageName, forceUpdate)
 	console.log(`[npxm] Linking ${packageName}`)
-	return exec('npm', ['link'], info.packagePath)
+	return exec('npm', ['link'], path.join(info.packagePath, 'node_modules', packageName))
 }
 
 export async function run(packageName: string, command: string, params: string[] = []) {

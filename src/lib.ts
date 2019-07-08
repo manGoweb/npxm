@@ -12,12 +12,13 @@ export interface Manifest {
 	}
 }
 
-const exec = (cmd: string, params: string[], cwd: string): Promise<void> =>
+const exec = (cmd: string, params: string[], cwd: string, options: any = null): Promise<void> =>
 	new Promise((resolve, reject) => {
 		const process = require('child_process').spawn(cmd, params, {
 			cwd,
 			stdio: 'inherit',
 			shell: true,
+			...options,
 		})
 		process.on('exit', (code: number) => {
 			if (code === 0) {
@@ -71,14 +72,18 @@ export async function add(
 		console.log(`[npxm] Downloading ${manifest.name}@${manifest.version}`)
 		fs.mkdirpSync(packagePath)
 
-		await npm
-			.extract(`${manifest.name}@${manifest.version}`, packagePath)
-			.then(() => exec('yarn', ['install'], packagePath))
-			.then(() => {
-				if (requestedVersion) {
-					makeSymlink(manifest.name, manifest.version, requestedVersion)
-				}
-			})
+		try {
+			await exec('npm', ['init', '-y'], packagePath, { stdio: ['ignore', 'ignore', 'ignore'] })
+				.then(() => exec('npm', ['install', `${manifest.name}@${manifest.version}`], packagePath))
+				.then(() => {
+					if (requestedVersion) {
+						makeSymlink(manifest.name, manifest.version, requestedVersion)
+					}
+				})
+		} catch (e) {
+			fs.unlinkSync(packagePath)
+			throw e
+		}
 
 		return result
 	})
@@ -115,10 +120,10 @@ export async function run(packageName: string, command: string, params: string[]
 	)
 
 	if (info.manifest.bin) {
-		const binPath = path.join(info.packagePath, info.manifest.bin[command])
+		const binPath = path.join(info.packagePath, 'node_modules/.bin', command)
 
 		if (fs.existsSync(binPath)) {
-			await exec('node', [binPath, ...(params || [])], process.cwd())
+			await exec(binPath, params || [], process.cwd())
 		} else {
 			throw new Error(`[npxm] Executable ${binPath} does not exist`)
 		}

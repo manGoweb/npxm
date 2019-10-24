@@ -1,6 +1,3 @@
-import fs from 'fs-extra'
-import path from 'path'
-import { installedDir } from './config'
 import lib from './lib'
 
 export default async function run(args: string[]) {
@@ -27,11 +24,9 @@ export default async function run(args: string[]) {
 			break
 		default:
 			const packageName = (args[0] || '').split('@')[0]
-			if (packageName && fs.existsSync(path.join(installedDir, packageName))) {
+			if (packageName && packageName.substr(0, 1) !== '-') {
 				return lib.run(args[0], args[1], args.slice(2))
-			} else {
-				const manifest = require('../package.json')
-				console.log(`This is ${manifest.name}@${manifest.version}.`)
 			}
+			console.error('Unknown command. Try to run `npxm --help` for more info.')
 	}
 }

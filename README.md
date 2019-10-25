@@ -11,10 +11,10 @@ Each use of `npx` downloads the package from internet while `npxm` keeps used pa
 npx gatsby new gatsby-site
 
 # first time download is necesasary
-npxm --run gatsby new gatsby-site
+npxm gatsby new gatsby-site
 
 # second time download is omited and task is ran instantly
-npxm --run gatsby new gatsby-second-site
+npxm gatsby new gatsby-second-site
 ```
 
 ## Install and use
@@ -32,7 +32,7 @@ npxm --install mango-cli
 #> [npxm] Downloading mango-cli@3.1.2
 #> …
 
-npxm --run mango-cli --version
+npxm mango-cli --version
 #> [npxm] Adding mango-cli
 #> [npxm] mango-cli@3.1.2 already installed.
 #> [npxm] Running `mango --version` (mango-cli@3.1.2 at /Users/viliamkopecky/www/npxm/installed/mango-cli/3.1.2)
@@ -42,7 +42,7 @@ npxm --run mango-cli --version
 ## Run at specific version
 
 ```sh
-npxm --run mango-cli@2 --version
+npxm mango-cli@2 --version
 #> [npxm] Adding mango-cli@2
 #> [npxm] Downloading mango-cli@2.7.1
 #> …

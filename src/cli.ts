@@ -1,6 +1,7 @@
+import fs from 'fs-extra'
 import lib from './lib'
 
-export default async function run(args: string[]) {
+function run(args: string[]) {
 	const forceUpdate = args.indexOf('--force-update') > -1 || args.indexOf('--f') > -1
 
 	switch (args[0] || '--help') {
@@ -8,18 +9,16 @@ export default async function run(args: string[]) {
 		case '--use':
 		case '--add':
 			return lib.add(args[1], forceUpdate)
-			break
 		case '--link':
 			return lib.link(args[1], forceUpdate)
-			break
 		case '--run':
 			return lib.run(args[1], args[2], args.slice(3))
-			break
 		case '--cleanup':
 			return lib.cleanup()
-			break
 		case '--help':
-			const manifest = require('../package.json')
+			const manifest = JSON.parse(
+				fs.readFileSync(`${__dirname}/../package.json`, { encoding: 'UTF8' })
+			)
 			console.log(`This is ${manifest.name}@${manifest.version}.`)
 			break
 		default:
@@ -29,4 +28,7 @@ export default async function run(args: string[]) {
 			}
 			console.error('Unknown command. Try to run `npxm --help` for more info.')
 	}
+	return
 }
+
+export default async (args: string[]) => run(args)

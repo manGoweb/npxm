@@ -1,7 +1,8 @@
 import fs from 'fs-extra'
 import os from 'os'
 import path from 'path'
-import pkg from '../package.json'
+
+const pkg = JSON.parse(fs.readFileSync(`${__dirname}/../package.json`, { encoding: 'UTF8' }))
 
 const installedDirname = 'installed'
 

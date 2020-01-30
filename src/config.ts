@@ -7,8 +7,8 @@ const pkg = JSON.parse(fs.readFileSync(`${__dirname}/../package.json`, { encodin
 const installedDirname = 'installed'
 
 const tryPaths = [
-	path.join(os.homedir(), '.npxm', pkg.name, pkg.version, installedDirname),
-	path.join(os.tmpdir(), 'npxm', pkg.name, pkg.version, installedDirname),
+	path.join(os.homedir(), '.npxm', pkg.name, pkg.version, process.version, installedDirname),
+	path.join(os.tmpdir(), 'npxm', pkg.name, pkg.version, process.version, installedDirname),
 ]
 
 export let installedDir: string = ''
